@@ -65,7 +65,6 @@ while (($# > 0)); do
       shift 2
       ;;
     --restore)
-      restore=true
       shift 1
       ;;
     --norestore)
@@ -102,6 +101,11 @@ if $help; then
   show_usage
   exit 0
 fi
+
+# sdk-task runs a standalone Arcade SDK task and does not need repo-specific toolset setup.
+# Skip importing configure-toolset.sh so its side effects (e.g. a repo's configure-toolset.sh
+# calling exit) don't terminate this script before the task runs.
+disable_configure_toolset_import=1
 
 . "$scriptroot/tools.sh"
 InitializeToolset
